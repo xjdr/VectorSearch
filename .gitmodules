@@ -1,0 +1,12 @@
+[submodule "extern/googletest"]
+	path = extern/googletest
+	url = https://github.com/google/googletest
+[submodule "extern/abseil-cpp"]
+	path = extern/abseil-cpp
+	url = https://github.com/abseil/abseil-cpp
+[submodule "extern/glog"]
+	path = extern/glog
+	url = https://github.com/google/glog
+[submodule "extern/grpc"]
+	path = extern/grpc
+	url = https://github.com/grpc/grpc

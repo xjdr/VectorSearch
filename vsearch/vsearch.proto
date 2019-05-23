@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package vsearch;
+
+option optimize_for = SPEED;
+
+enum Code {
+    kOk = 0;
+    kEnd = 1;
+    kNotFound = 2;
+    kCorruption = 3;
+    kNotSupported = 4;
+    kInvalidArgument = 5;
+    kIOError = 6;
+    kSnapshotNotExists = 7;
+    kWrongShard = 8;
+    kUnknownError = 9;
+    kClientError = 10;
+    kEnsembleError = 11;
+    kWriterAlreadyExistsError = 12;
+    kReplicationError = 13;
+    kRetryableError = 14;
+    kTimeoutError = 15;
+    kOpTooLarge = 16;
+    kQueryFailed = 17;
+}
+
+message RetCode {
+    Code state = 1;
+    string msg = 2;
+}
+
+message Tensor {
+    int32 id = 1;
+    int32 size = 2;
+    string metadata = 3;
+    bytes data = 4;
+}
+
+//message Index {
+//    repeated Tensor index = 1;
+//}
+
+message SearchRequest {
+    int32 k = 1;
+    Tensor q = 2;
+}
+
+message SearchResponse {
+    repeated int32 ids = 1;
+}
+
+service VectorSearch {
+
+    //rpc index (Index) returns (RetCode);
+
+    rpc search (SearchRequest) returns (SearchResponse);
+
+}

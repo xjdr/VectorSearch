@@ -1,0 +1,9 @@
+.idea/
+cmake-build-debug/
+CMakeFiles/
+Makefile
+VectorSearch
+VectorSearch.cbp
+cmake_install.cmake
+lib/
+tests/CMakeFiles/
