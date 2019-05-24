@@ -1,5 +1,6 @@
-#ifndef VECTORSEARCH_VSEARCH_VSEARCH_SERVER_H_
-#define VECTORSEARCH_VSEARCH_VSEARCH_SERVER_H_
+#ifndef VECTORSEARCH_VSEARCH_INDEX_SERVER_H_
+#define VECTORSEARCH_VSEARCH_INDEX_SERVER_H_
+
 
 #include <memory>
 #include <iostream>
@@ -18,13 +19,14 @@ using grpc::ServerBuilder;
 using grpc::ServerContext;
 using grpc::ServerCompletionQueue;
 using grpc::Status;
-using vsearch::SearchRequest;
-using vsearch::SearchResponse;
+using vsearch::Index;
+using vsearch::RetCode;
+using vsearch::Code;
 using vsearch::VectorSearch;
 
-class VsearchServer final {
+class IndexServer final {
  public:
-  ~VsearchServer() {
+  ~IndexServer() {
     server_->Shutdown();
     // Always shutdown the completion queue after the server.
     cq_->Shutdown();
@@ -32,7 +34,7 @@ class VsearchServer final {
 
   // There is no shutdown handling in this code.
   void Run() {
-    std::string server_address("0.0.0.0:50051");
+    std::string server_address("0.0.0.0:50052");
 
     ServerBuilder builder;
     // Listen on the given address without any authentication mechanism.
@@ -74,7 +76,7 @@ class VsearchServer final {
         // the tag uniquely identifying the request (so that different CallData
         // instances can serve different requests concurrently), in this case
         // the memory address of this CallData instance.
-        service_->Requestsearch(&ctx_, &request_, &responder_, cq_, cq_, this);
+        service_->Requestindex(&ctx_, &request_, &responder_, cq_, cq_, this);
       } else if (status_ == PROCESS) {
         // Spawn a new CallData instance to serve new clients while we process
         // the one for this CallData. The instance will deallocate itself as
@@ -82,10 +84,7 @@ class VsearchServer final {
         new CallData(service_, cq_);
 
         // The actual processing.
-        reply_.add_ids(0);
-        reply_.add_ids(1);
-        reply_.add_ids(2);
-        reply_.add_ids(3);
+        //reply_.a
 
         // And we are done! Let the gRPC runtime know we've finished, using the
         // memory address of this instance as the uniquely identifying tag for
@@ -111,12 +110,12 @@ class VsearchServer final {
     ServerContext ctx_;
 
     // What we get from the client.
-    SearchRequest request_;
+    Index request_;
     // What we send back to the client.
-    SearchResponse reply_;
+    RetCode reply_;
 
     // The means to get back to the client.
-    ServerAsyncResponseWriter<SearchResponse> responder_;
+    ServerAsyncResponseWriter<RetCode> responder_;
 
     // Let's implement a tiny state machine with the following states.
     enum CallStatus { CREATE, PROCESS, FINISH };
@@ -146,4 +145,4 @@ class VsearchServer final {
   std::unique_ptr<Server> server_;
 };
 
-#endif //VECTORSEARCH_VSEARCH_VSEARCH_SERVER_H_
+#endif //VECTORSEARCH_VSEARCH_INDEX_SERVER_H_

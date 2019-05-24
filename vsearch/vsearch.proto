@@ -37,9 +37,9 @@ message Tensor {
     bytes data = 4;
 }
 
-//message Index {
-//    repeated Tensor index = 1;
-//}
+message Index {
+   repeated Tensor index = 1;
+}
 
 message SearchRequest {
     int32 k = 1;
@@ -51,9 +51,6 @@ message SearchResponse {
 }
 
 service VectorSearch {
-
-    //rpc index (Index) returns (RetCode);
-
+    rpc index (Index) returns (RetCode);
     rpc search (SearchRequest) returns (SearchResponse);
-
 }

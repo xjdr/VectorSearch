@@ -42,7 +42,7 @@ struct TableStruct_vsearch_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::google::protobuf::internal::ParseTable schema[4]
+  static const ::google::protobuf::internal::ParseTable schema[5]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
@@ -50,6 +50,9 @@ struct TableStruct_vsearch_2eproto {
 };
 void AddDescriptors_vsearch_2eproto();
 namespace vsearch {
+class Index;
+class IndexDefaultTypeInternal;
+extern IndexDefaultTypeInternal _Index_default_instance_;
 class RetCode;
 class RetCodeDefaultTypeInternal;
 extern RetCodeDefaultTypeInternal _RetCode_default_instance_;
@@ -65,6 +68,7 @@ extern TensorDefaultTypeInternal _Tensor_default_instance_;
 }  // namespace vsearch
 namespace google {
 namespace protobuf {
+template<> ::vsearch::Index* Arena::CreateMaybeMessage<::vsearch::Index>(Arena*);
 template<> ::vsearch::RetCode* Arena::CreateMaybeMessage<::vsearch::RetCode>(Arena*);
 template<> ::vsearch::SearchRequest* Arena::CreateMaybeMessage<::vsearch::SearchRequest>(Arena*);
 template<> ::vsearch::SearchResponse* Arena::CreateMaybeMessage<::vsearch::SearchResponse>(Arena*);
@@ -388,6 +392,124 @@ class Tensor final :
 };
 // -------------------------------------------------------------------
 
+class Index final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:vsearch.Index) */ {
+ public:
+  Index();
+  virtual ~Index();
+
+  Index(const Index& from);
+
+  inline Index& operator=(const Index& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  Index(Index&& from) noexcept
+    : Index() {
+    *this = ::std::move(from);
+  }
+
+  inline Index& operator=(Index&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return default_instance().GetDescriptor();
+  }
+  static const Index& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const Index* internal_default_instance() {
+    return reinterpret_cast<const Index*>(
+               &_Index_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    2;
+
+  void Swap(Index* other);
+  friend void swap(Index& a, Index& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline Index* New() const final {
+    return CreateMaybeMessage<Index>(nullptr);
+  }
+
+  Index* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<Index>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const Index& from);
+  void MergeFrom(const Index& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  static const char* _InternalParse(const char* begin, const char* end, void* object, ::google::protobuf::internal::ParseContext* ctx);
+  ::google::protobuf::internal::ParseFunc _ParseFunc() const final { return _InternalParse; }
+  #else
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(Index* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .vsearch.Tensor index = 1;
+  int index_size() const;
+  void clear_index();
+  static const int kIndexFieldNumber = 1;
+  ::vsearch::Tensor* mutable_index(int index);
+  ::google::protobuf::RepeatedPtrField< ::vsearch::Tensor >*
+      mutable_index();
+  const ::vsearch::Tensor& index(int index) const;
+  ::vsearch::Tensor* add_index();
+  const ::google::protobuf::RepeatedPtrField< ::vsearch::Tensor >&
+      index() const;
+
+  // @@protoc_insertion_point(class_scope:vsearch.Index)
+ private:
+  class HasBitSetters;
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::vsearch::Tensor > index_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_vsearch_2eproto;
+};
+// -------------------------------------------------------------------
+
 class SearchRequest final :
     public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:vsearch.SearchRequest) */ {
  public:
@@ -426,7 +548,7 @@ class SearchRequest final :
                &_SearchRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    3;
 
   void Swap(SearchRequest* other);
   friend void swap(SearchRequest& a, SearchRequest& b) {
@@ -548,7 +670,7 @@ class SearchResponse final :
                &_SearchResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    4;
 
   void Swap(SearchResponse* other);
   friend void swap(SearchResponse& a, SearchResponse& b) {
@@ -845,6 +967,40 @@ inline void Tensor::set_allocated_data(::std::string* data) {
 
 // -------------------------------------------------------------------
 
+// Index
+
+// repeated .vsearch.Tensor index = 1;
+inline int Index::index_size() const {
+  return index_.size();
+}
+inline void Index::clear_index() {
+  index_.Clear();
+}
+inline ::vsearch::Tensor* Index::mutable_index(int index) {
+  // @@protoc_insertion_point(field_mutable:vsearch.Index.index)
+  return index_.Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField< ::vsearch::Tensor >*
+Index::mutable_index() {
+  // @@protoc_insertion_point(field_mutable_list:vsearch.Index.index)
+  return &index_;
+}
+inline const ::vsearch::Tensor& Index::index(int index) const {
+  // @@protoc_insertion_point(field_get:vsearch.Index.index)
+  return index_.Get(index);
+}
+inline ::vsearch::Tensor* Index::add_index() {
+  // @@protoc_insertion_point(field_add:vsearch.Index.index)
+  return index_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::vsearch::Tensor >&
+Index::index() const {
+  // @@protoc_insertion_point(field_list:vsearch.Index.index)
+  return index_;
+}
+
+// -------------------------------------------------------------------
+
 // SearchRequest
 
 // int32 k = 1;
@@ -949,6 +1105,8 @@ SearchResponse::mutable_ids() {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

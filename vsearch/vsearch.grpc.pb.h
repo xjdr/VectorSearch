@@ -43,8 +43,13 @@ class VectorSearch final {
   class StubInterface {
    public:
     virtual ~StubInterface() {}
-    // rpc index (Index) returns (RetCode);
-    //
+    virtual ::grpc::Status index(::grpc::ClientContext* context, const ::vsearch::Index& request, ::vsearch::RetCode* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::vsearch::RetCode>> Asyncindex(::grpc::ClientContext* context, const ::vsearch::Index& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::vsearch::RetCode>>(AsyncindexRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::vsearch::RetCode>> PrepareAsyncindex(::grpc::ClientContext* context, const ::vsearch::Index& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::vsearch::RetCode>>(PrepareAsyncindexRaw(context, request, cq));
+    }
     virtual ::grpc::Status search(::grpc::ClientContext* context, const ::vsearch::SearchRequest& request, ::vsearch::SearchResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::vsearch::SearchResponse>> Asyncsearch(::grpc::ClientContext* context, const ::vsearch::SearchRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::vsearch::SearchResponse>>(AsyncsearchRaw(context, request, cq));
@@ -55,8 +60,10 @@ class VectorSearch final {
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
-      // rpc index (Index) returns (RetCode);
-      //
+      virtual void index(::grpc::ClientContext* context, const ::vsearch::Index* request, ::vsearch::RetCode* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void index(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::vsearch::RetCode* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void index(::grpc::ClientContext* context, const ::vsearch::Index* request, ::vsearch::RetCode* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void index(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::vsearch::RetCode* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
       virtual void search(::grpc::ClientContext* context, const ::vsearch::SearchRequest* request, ::vsearch::SearchResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void search(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::vsearch::SearchResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void search(::grpc::ClientContext* context, const ::vsearch::SearchRequest* request, ::vsearch::SearchResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
@@ -64,12 +71,21 @@ class VectorSearch final {
     };
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
   private:
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::vsearch::RetCode>* AsyncindexRaw(::grpc::ClientContext* context, const ::vsearch::Index& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::vsearch::RetCode>* PrepareAsyncindexRaw(::grpc::ClientContext* context, const ::vsearch::Index& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::vsearch::SearchResponse>* AsyncsearchRaw(::grpc::ClientContext* context, const ::vsearch::SearchRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::vsearch::SearchResponse>* PrepareAsyncsearchRaw(::grpc::ClientContext* context, const ::vsearch::SearchRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
+    ::grpc::Status index(::grpc::ClientContext* context, const ::vsearch::Index& request, ::vsearch::RetCode* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::vsearch::RetCode>> Asyncindex(::grpc::ClientContext* context, const ::vsearch::Index& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::vsearch::RetCode>>(AsyncindexRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::vsearch::RetCode>> PrepareAsyncindex(::grpc::ClientContext* context, const ::vsearch::Index& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::vsearch::RetCode>>(PrepareAsyncindexRaw(context, request, cq));
+    }
     ::grpc::Status search(::grpc::ClientContext* context, const ::vsearch::SearchRequest& request, ::vsearch::SearchResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::vsearch::SearchResponse>> Asyncsearch(::grpc::ClientContext* context, const ::vsearch::SearchRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::vsearch::SearchResponse>>(AsyncsearchRaw(context, request, cq));
@@ -80,6 +96,10 @@ class VectorSearch final {
     class experimental_async final :
       public StubInterface::experimental_async_interface {
      public:
+      void index(::grpc::ClientContext* context, const ::vsearch::Index* request, ::vsearch::RetCode* response, std::function<void(::grpc::Status)>) override;
+      void index(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::vsearch::RetCode* response, std::function<void(::grpc::Status)>) override;
+      void index(::grpc::ClientContext* context, const ::vsearch::Index* request, ::vsearch::RetCode* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void index(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::vsearch::RetCode* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
       void search(::grpc::ClientContext* context, const ::vsearch::SearchRequest* request, ::vsearch::SearchResponse* response, std::function<void(::grpc::Status)>) override;
       void search(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::vsearch::SearchResponse* response, std::function<void(::grpc::Status)>) override;
       void search(::grpc::ClientContext* context, const ::vsearch::SearchRequest* request, ::vsearch::SearchResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
@@ -95,8 +115,11 @@ class VectorSearch final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class experimental_async async_stub_{this};
+    ::grpc::ClientAsyncResponseReader< ::vsearch::RetCode>* AsyncindexRaw(::grpc::ClientContext* context, const ::vsearch::Index& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::vsearch::RetCode>* PrepareAsyncindexRaw(::grpc::ClientContext* context, const ::vsearch::Index& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::vsearch::SearchResponse>* AsyncsearchRaw(::grpc::ClientContext* context, const ::vsearch::SearchRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::vsearch::SearchResponse>* PrepareAsyncsearchRaw(::grpc::ClientContext* context, const ::vsearch::SearchRequest& request, ::grpc::CompletionQueue* cq) override;
+    const ::grpc::internal::RpcMethod rpcmethod_index_;
     const ::grpc::internal::RpcMethod rpcmethod_search_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
@@ -105,9 +128,28 @@ class VectorSearch final {
    public:
     Service();
     virtual ~Service();
-    // rpc index (Index) returns (RetCode);
-    //
+    virtual ::grpc::Status index(::grpc::ServerContext* context, const ::vsearch::Index* request, ::vsearch::RetCode* response);
     virtual ::grpc::Status search(::grpc::ServerContext* context, const ::vsearch::SearchRequest* request, ::vsearch::SearchResponse* response);
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_index : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithAsyncMethod_index() {
+      ::grpc::Service::MarkMethodAsync(0);
+    }
+    ~WithAsyncMethod_index() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status index(::grpc::ServerContext* context, const ::vsearch::Index* request, ::vsearch::RetCode* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void Requestindex(::grpc::ServerContext* context, ::vsearch::Index* request, ::grpc::ServerAsyncResponseWriter< ::vsearch::RetCode>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+    }
   };
   template <class BaseClass>
   class WithAsyncMethod_search : public BaseClass {
@@ -115,7 +157,7 @@ class VectorSearch final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithAsyncMethod_search() {
-      ::grpc::Service::MarkMethodAsync(0);
+      ::grpc::Service::MarkMethodAsync(1);
     }
     ~WithAsyncMethod_search() override {
       BaseClassMustBeDerivedFromService(this);
@@ -126,17 +168,48 @@ class VectorSearch final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void Requestsearch(::grpc::ServerContext* context, ::vsearch::SearchRequest* request, ::grpc::ServerAsyncResponseWriter< ::vsearch::SearchResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_search<Service > AsyncService;
+  typedef WithAsyncMethod_index<WithAsyncMethod_search<Service > > AsyncService;
+  template <class BaseClass>
+  class ExperimentalWithCallbackMethod_index : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    ExperimentalWithCallbackMethod_index() {
+      ::grpc::Service::experimental().MarkMethodCallback(0,
+        new ::grpc::internal::CallbackUnaryHandler< ::vsearch::Index, ::vsearch::RetCode>(
+          [this](::grpc::ServerContext* context,
+                 const ::vsearch::Index* request,
+                 ::vsearch::RetCode* response,
+                 ::grpc::experimental::ServerCallbackRpcController* controller) {
+                   return this->index(context, request, response, controller);
+                 }));
+    }
+    void SetMessageAllocatorFor_index(
+        ::grpc::experimental::MessageAllocator< ::vsearch::Index, ::vsearch::RetCode>* allocator) {
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::vsearch::Index, ::vsearch::RetCode>*>(
+          ::grpc::Service::experimental().GetHandler(0))
+              ->SetMessageAllocator(allocator);
+    }
+    ~ExperimentalWithCallbackMethod_index() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status index(::grpc::ServerContext* context, const ::vsearch::Index* request, ::vsearch::RetCode* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual void index(::grpc::ServerContext* context, const ::vsearch::Index* request, ::vsearch::RetCode* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+  };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_search : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     ExperimentalWithCallbackMethod_search() {
-      ::grpc::Service::experimental().MarkMethodCallback(0,
+      ::grpc::Service::experimental().MarkMethodCallback(1,
         new ::grpc::internal::CallbackUnaryHandler< ::vsearch::SearchRequest, ::vsearch::SearchResponse>(
           [this](::grpc::ServerContext* context,
                  const ::vsearch::SearchRequest* request,
@@ -148,7 +221,7 @@ class VectorSearch final {
     void SetMessageAllocatorFor_search(
         ::grpc::experimental::MessageAllocator< ::vsearch::SearchRequest, ::vsearch::SearchResponse>* allocator) {
       static_cast<::grpc::internal::CallbackUnaryHandler< ::vsearch::SearchRequest, ::vsearch::SearchResponse>*>(
-          ::grpc::Service::experimental().GetHandler(0))
+          ::grpc::Service::experimental().GetHandler(1))
               ->SetMessageAllocator(allocator);
     }
     ~ExperimentalWithCallbackMethod_search() override {
@@ -161,14 +234,31 @@ class VectorSearch final {
     }
     virtual void search(::grpc::ServerContext* context, const ::vsearch::SearchRequest* request, ::vsearch::SearchResponse* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
-  typedef ExperimentalWithCallbackMethod_search<Service > ExperimentalCallbackService;
+  typedef ExperimentalWithCallbackMethod_index<ExperimentalWithCallbackMethod_search<Service > > ExperimentalCallbackService;
+  template <class BaseClass>
+  class WithGenericMethod_index : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithGenericMethod_index() {
+      ::grpc::Service::MarkMethodGeneric(0);
+    }
+    ~WithGenericMethod_index() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status index(::grpc::ServerContext* context, const ::vsearch::Index* request, ::vsearch::RetCode* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
   template <class BaseClass>
   class WithGenericMethod_search : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithGenericMethod_search() {
-      ::grpc::Service::MarkMethodGeneric(0);
+      ::grpc::Service::MarkMethodGeneric(1);
     }
     ~WithGenericMethod_search() override {
       BaseClassMustBeDerivedFromService(this);
@@ -180,12 +270,32 @@ class VectorSearch final {
     }
   };
   template <class BaseClass>
+  class WithRawMethod_index : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithRawMethod_index() {
+      ::grpc::Service::MarkMethodRaw(0);
+    }
+    ~WithRawMethod_index() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status index(::grpc::ServerContext* context, const ::vsearch::Index* request, ::vsearch::RetCode* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void Requestindex(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithRawMethod_search : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithRawMethod_search() {
-      ::grpc::Service::MarkMethodRaw(0);
+      ::grpc::Service::MarkMethodRaw(1);
     }
     ~WithRawMethod_search() override {
       BaseClassMustBeDerivedFromService(this);
@@ -196,8 +306,33 @@ class VectorSearch final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void Requestsearch(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
+  };
+  template <class BaseClass>
+  class ExperimentalWithRawCallbackMethod_index : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    ExperimentalWithRawCallbackMethod_index() {
+      ::grpc::Service::experimental().MarkMethodRawCallback(0,
+        new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          [this](::grpc::ServerContext* context,
+                 const ::grpc::ByteBuffer* request,
+                 ::grpc::ByteBuffer* response,
+                 ::grpc::experimental::ServerCallbackRpcController* controller) {
+                   this->index(context, request, response, controller);
+                 }));
+    }
+    ~ExperimentalWithRawCallbackMethod_index() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status index(::grpc::ServerContext* context, const ::vsearch::Index* request, ::vsearch::RetCode* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual void index(::grpc::ServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_search : public BaseClass {
@@ -205,7 +340,7 @@ class VectorSearch final {
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     ExperimentalWithRawCallbackMethod_search() {
-      ::grpc::Service::experimental().MarkMethodRawCallback(0,
+      ::grpc::Service::experimental().MarkMethodRawCallback(1,
         new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this](::grpc::ServerContext* context,
                  const ::grpc::ByteBuffer* request,
@@ -225,12 +360,32 @@ class VectorSearch final {
     virtual void search(::grpc::ServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
+  class WithStreamedUnaryMethod_index : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithStreamedUnaryMethod_index() {
+      ::grpc::Service::MarkMethodStreamed(0,
+        new ::grpc::internal::StreamedUnaryHandler< ::vsearch::Index, ::vsearch::RetCode>(std::bind(&WithStreamedUnaryMethod_index<BaseClass>::Streamedindex, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_index() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status index(::grpc::ServerContext* context, const ::vsearch::Index* request, ::vsearch::RetCode* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status Streamedindex(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::vsearch::Index,::vsearch::RetCode>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_search : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
    public:
     WithStreamedUnaryMethod_search() {
-      ::grpc::Service::MarkMethodStreamed(0,
+      ::grpc::Service::MarkMethodStreamed(1,
         new ::grpc::internal::StreamedUnaryHandler< ::vsearch::SearchRequest, ::vsearch::SearchResponse>(std::bind(&WithStreamedUnaryMethod_search<BaseClass>::Streamedsearch, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_search() override {
@@ -244,9 +399,9 @@ class VectorSearch final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status Streamedsearch(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::vsearch::SearchRequest,::vsearch::SearchResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_search<Service > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_index<WithStreamedUnaryMethod_search<Service > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_search<Service > StreamedService;
+  typedef WithStreamedUnaryMethod_index<WithStreamedUnaryMethod_search<Service > > StreamedService;
 };
 
 }  // namespace vsearch

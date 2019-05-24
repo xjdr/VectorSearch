@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
 #include "../third_party/SPTAG/distance.h"
-#include "../vsearch/vsearch.pb.h"
+//#include "../vsearch/vsearch.pb.h"
 
 #include <iostream>
 #include <fstream>

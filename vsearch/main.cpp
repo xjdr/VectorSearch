@@ -1,6 +1,8 @@
 #include <iostream>
+#include <thread>
 #include <glog/logging.h>
 
+#include "index_server.h"
 #include "vsearch_server.h"
 
 int main(int argc, char* argv[]) {
@@ -8,6 +10,18 @@ int main(int argc, char* argv[]) {
 
   LOG(INFO) << "Starting vsearch .... ";
 
-  VsearchServer server;
-  server.Run();
+  std::thread tv([](){
+    VsearchServer vserver;
+    vserver.Run();
+  });
+
+  std::thread ti([](){
+    IndexServer iserver;
+    iserver.Run();
+  });
+
+  tv.join();
+  ti.join();
+
+  return 0;
 }

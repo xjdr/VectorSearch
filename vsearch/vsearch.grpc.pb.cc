@@ -19,6 +19,7 @@
 namespace vsearch {
 
 static const char* VectorSearch_method_names[] = {
+  "/vsearch.VectorSearch/index",
   "/vsearch.VectorSearch/search",
 };
 
@@ -29,8 +30,37 @@ std::unique_ptr< VectorSearch::Stub> VectorSearch::NewStub(const std::shared_ptr
 }
 
 VectorSearch::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
-  : channel_(channel), rpcmethod_search_(VectorSearch_method_names[0], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  : channel_(channel), rpcmethod_index_(VectorSearch_method_names[0], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_search_(VectorSearch_method_names[1], ::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
+
+::grpc::Status VectorSearch::Stub::index(::grpc::ClientContext* context, const ::vsearch::Index& request, ::vsearch::RetCode* response) {
+  return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_index_, context, request, response);
+}
+
+void VectorSearch::Stub::experimental_async::index(::grpc::ClientContext* context, const ::vsearch::Index* request, ::vsearch::RetCode* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_index_, context, request, response, std::move(f));
+}
+
+void VectorSearch::Stub::experimental_async::index(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::vsearch::RetCode* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_index_, context, request, response, std::move(f));
+}
+
+void VectorSearch::Stub::experimental_async::index(::grpc::ClientContext* context, const ::vsearch::Index* request, ::vsearch::RetCode* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_index_, context, request, response, reactor);
+}
+
+void VectorSearch::Stub::experimental_async::index(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::vsearch::RetCode* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_index_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::vsearch::RetCode>* VectorSearch::Stub::AsyncindexRaw(::grpc::ClientContext* context, const ::vsearch::Index& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::vsearch::RetCode>::Create(channel_.get(), cq, rpcmethod_index_, context, request, true);
+}
+
+::grpc::ClientAsyncResponseReader< ::vsearch::RetCode>* VectorSearch::Stub::PrepareAsyncindexRaw(::grpc::ClientContext* context, const ::vsearch::Index& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::vsearch::RetCode>::Create(channel_.get(), cq, rpcmethod_index_, context, request, false);
+}
 
 ::grpc::Status VectorSearch::Stub::search(::grpc::ClientContext* context, const ::vsearch::SearchRequest& request, ::vsearch::SearchResponse* response) {
   return ::grpc::internal::BlockingUnaryCall(channel_.get(), rpcmethod_search_, context, request, response);
@@ -64,11 +94,23 @@ VectorSearch::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       VectorSearch_method_names[0],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< VectorSearch::Service, ::vsearch::Index, ::vsearch::RetCode>(
+          std::mem_fn(&VectorSearch::Service::index), this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      VectorSearch_method_names[1],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< VectorSearch::Service, ::vsearch::SearchRequest, ::vsearch::SearchResponse>(
           std::mem_fn(&VectorSearch::Service::search), this)));
 }
 
 VectorSearch::Service::~Service() {
+}
+
+::grpc::Status VectorSearch::Service::index(::grpc::ServerContext* context, const ::vsearch::Index* request, ::vsearch::RetCode* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
 ::grpc::Status VectorSearch::Service::search(::grpc::ServerContext* context, const ::vsearch::SearchRequest* request, ::vsearch::SearchResponse* response) {

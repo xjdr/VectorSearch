@@ -18,7 +18,10 @@ macro(package_add_test TESTNAME)
     set_target_properties(${TESTNAME} PROPERTIES FOLDER tests)
 endmacro()
 
-package_add_test(distance_test distance_test.cpp ../vsearch/vsearch.pb.h ../vsearch/vsearch.pb.cc)
+package_add_test(distance_test distance_test.cpp
+        ../vsearch/vsearch.pb.h
+        ../vsearch/vsearch.pb.cc
+        )
 include(FindProtobuf)
 find_package(Protobuf REQUIRED)
 include_directories(${PROTOBUF_INCLUDE_DIR})

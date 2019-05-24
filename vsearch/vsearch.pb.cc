@@ -26,6 +26,10 @@ class TensorDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<Tensor> _instance;
 } _Tensor_default_instance_;
+class IndexDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<Index> _instance;
+} _Index_default_instance_;
 class SearchRequestDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<SearchRequest> _instance;
@@ -63,6 +67,21 @@ static void InitDefaultsTensor_vsearch_2eproto() {
 ::google::protobuf::internal::SCCInfo<0> scc_info_Tensor_vsearch_2eproto =
     {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsTensor_vsearch_2eproto}, {}};
 
+static void InitDefaultsIndex_vsearch_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::vsearch::_Index_default_instance_;
+    new (ptr) ::vsearch::Index();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::vsearch::Index::InitAsDefaultInstance();
+}
+
+::google::protobuf::internal::SCCInfo<1> scc_info_Index_vsearch_2eproto =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsIndex_vsearch_2eproto}, {
+      &scc_info_Tensor_vsearch_2eproto.base,}};
+
 static void InitDefaultsSearchRequest_vsearch_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -95,11 +114,12 @@ static void InitDefaultsSearchResponse_vsearch_2eproto() {
 void InitDefaults_vsearch_2eproto() {
   ::google::protobuf::internal::InitSCC(&scc_info_RetCode_vsearch_2eproto.base);
   ::google::protobuf::internal::InitSCC(&scc_info_Tensor_vsearch_2eproto.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_Index_vsearch_2eproto.base);
   ::google::protobuf::internal::InitSCC(&scc_info_SearchRequest_vsearch_2eproto.base);
   ::google::protobuf::internal::InitSCC(&scc_info_SearchResponse_vsearch_2eproto.base);
 }
 
-::google::protobuf::Metadata file_level_metadata_vsearch_2eproto[4];
+::google::protobuf::Metadata file_level_metadata_vsearch_2eproto[5];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors_vsearch_2eproto[1];
 constexpr ::google::protobuf::ServiceDescriptor const** file_level_service_descriptors_vsearch_2eproto = nullptr;
 
@@ -121,6 +141,12 @@ const ::google::protobuf::uint32 TableStruct_vsearch_2eproto::offsets[] PROTOBUF
   PROTOBUF_FIELD_OFFSET(::vsearch::Tensor, metadata_),
   PROTOBUF_FIELD_OFFSET(::vsearch::Tensor, data_),
   ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::vsearch::Index, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::vsearch::Index, index_),
+  ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::vsearch::SearchRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -137,13 +163,15 @@ const ::google::protobuf::uint32 TableStruct_vsearch_2eproto::offsets[] PROTOBUF
 static const ::google::protobuf::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::vsearch::RetCode)},
   { 7, -1, sizeof(::vsearch::Tensor)},
-  { 16, -1, sizeof(::vsearch::SearchRequest)},
-  { 23, -1, sizeof(::vsearch::SearchResponse)},
+  { 16, -1, sizeof(::vsearch::Index)},
+  { 22, -1, sizeof(::vsearch::SearchRequest)},
+  { 29, -1, sizeof(::vsearch::SearchResponse)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::vsearch::_RetCode_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::vsearch::_Tensor_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::vsearch::_Index_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::vsearch::_SearchRequest_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::vsearch::_SearchResponse_default_instance_),
 };
@@ -151,32 +179,34 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
 ::google::protobuf::internal::AssignDescriptorsTable assign_descriptors_table_vsearch_2eproto = {
   {}, AddDescriptors_vsearch_2eproto, "vsearch.proto", schemas,
   file_default_instances, TableStruct_vsearch_2eproto::offsets,
-  file_level_metadata_vsearch_2eproto, 4, file_level_enum_descriptors_vsearch_2eproto, file_level_service_descriptors_vsearch_2eproto,
+  file_level_metadata_vsearch_2eproto, 5, file_level_enum_descriptors_vsearch_2eproto, file_level_service_descriptors_vsearch_2eproto,
 };
 
 const char descriptor_table_protodef_vsearch_2eproto[] =
   "\n\rvsearch.proto\022\007vsearch\"4\n\007RetCode\022\034\n\005s"
   "tate\030\001 \001(\0162\r.vsearch.Code\022\013\n\003msg\030\002 \001(\t\"B"
   "\n\006Tensor\022\n\n\002id\030\001 \001(\005\022\014\n\004size\030\002 \001(\005\022\020\n\010me"
-  "tadata\030\003 \001(\t\022\014\n\004data\030\004 \001(\014\"6\n\rSearchRequ"
-  "est\022\t\n\001k\030\001 \001(\005\022\032\n\001q\030\002 \001(\0132\017.vsearch.Tens"
-  "or\"\035\n\016SearchResponse\022\013\n\003ids\030\001 \003(\005*\323\002\n\004Co"
-  "de\022\007\n\003kOk\020\000\022\010\n\004kEnd\020\001\022\r\n\tkNotFound\020\002\022\017\n\013"
-  "kCorruption\020\003\022\021\n\rkNotSupported\020\004\022\024\n\020kInv"
-  "alidArgument\020\005\022\014\n\010kIOError\020\006\022\026\n\022kSnapsho"
-  "tNotExists\020\007\022\017\n\013kWrongShard\020\010\022\021\n\rkUnknow"
-  "nError\020\t\022\020\n\014kClientError\020\n\022\022\n\016kEnsembleE"
-  "rror\020\013\022\035\n\031kWriterAlreadyExistsError\020\014\022\025\n"
-  "\021kReplicationError\020\r\022\023\n\017kRetryableError\020"
-  "\016\022\021\n\rkTimeoutError\020\017\022\017\n\013kOpTooLarge\020\020\022\020\n"
-  "\014kQueryFailed\020\0212I\n\014VectorSearch\0229\n\006searc"
-  "h\022\026.vsearch.SearchRequest\032\027.vsearch.Sear"
-  "chResponseB\002H\001b\006proto3"
+  "tadata\030\003 \001(\t\022\014\n\004data\030\004 \001(\014\"\'\n\005Index\022\036\n\005i"
+  "ndex\030\001 \003(\0132\017.vsearch.Tensor\"6\n\rSearchReq"
+  "uest\022\t\n\001k\030\001 \001(\005\022\032\n\001q\030\002 \001(\0132\017.vsearch.Ten"
+  "sor\"\035\n\016SearchResponse\022\013\n\003ids\030\001 \003(\005*\323\002\n\004C"
+  "ode\022\007\n\003kOk\020\000\022\010\n\004kEnd\020\001\022\r\n\tkNotFound\020\002\022\017\n"
+  "\013kCorruption\020\003\022\021\n\rkNotSupported\020\004\022\024\n\020kIn"
+  "validArgument\020\005\022\014\n\010kIOError\020\006\022\026\n\022kSnapsh"
+  "otNotExists\020\007\022\017\n\013kWrongShard\020\010\022\021\n\rkUnkno"
+  "wnError\020\t\022\020\n\014kClientError\020\n\022\022\n\016kEnsemble"
+  "Error\020\013\022\035\n\031kWriterAlreadyExistsError\020\014\022\025"
+  "\n\021kReplicationError\020\r\022\023\n\017kRetryableError"
+  "\020\016\022\021\n\rkTimeoutError\020\017\022\017\n\013kOpTooLarge\020\020\022\020"
+  "\n\014kQueryFailed\020\0212t\n\014VectorSearch\022)\n\005inde"
+  "x\022\016.vsearch.Index\032\020.vsearch.RetCode\0229\n\006s"
+  "earch\022\026.vsearch.SearchRequest\032\027.vsearch."
+  "SearchResponseB\002H\001b\006proto3"
   ;
 ::google::protobuf::internal::DescriptorTable descriptor_table_vsearch_2eproto = {
   false, InitDefaults_vsearch_2eproto, 
   descriptor_table_protodef_vsearch_2eproto,
-  "vsearch.proto", &assign_descriptors_table_vsearch_2eproto, 662,
+  "vsearch.proto", &assign_descriptors_table_vsearch_2eproto, 746,
 };
 
 void AddDescriptors_vsearch_2eproto() {
@@ -1017,6 +1047,286 @@ void Tensor::InternalSwap(Tensor* other) {
 
 // ===================================================================
 
+void Index::InitAsDefaultInstance() {
+}
+class Index::HasBitSetters {
+ public:
+};
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int Index::kIndexFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+Index::Index()
+  : ::google::protobuf::Message(), _internal_metadata_(nullptr) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:vsearch.Index)
+}
+Index::Index(const Index& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(nullptr),
+      index_(from.index_) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:vsearch.Index)
+}
+
+void Index::SharedCtor() {
+  ::google::protobuf::internal::InitSCC(
+      &scc_info_Index_vsearch_2eproto.base);
+}
+
+Index::~Index() {
+  // @@protoc_insertion_point(destructor:vsearch.Index)
+  SharedDtor();
+}
+
+void Index::SharedDtor() {
+}
+
+void Index::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const Index& Index::default_instance() {
+  ::google::protobuf::internal::InitSCC(&::scc_info_Index_vsearch_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void Index::Clear() {
+// @@protoc_insertion_point(message_clear_start:vsearch.Index)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  index_.Clear();
+  _internal_metadata_.Clear();
+}
+
+#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+const char* Index::_InternalParse(const char* begin, const char* end, void* object,
+                  ::google::protobuf::internal::ParseContext* ctx) {
+  auto msg = static_cast<Index*>(object);
+  ::google::protobuf::int32 size; (void)size;
+  int depth; (void)depth;
+  ::google::protobuf::uint32 tag;
+  ::google::protobuf::internal::ParseFunc parser_till_end; (void)parser_till_end;
+  auto ptr = begin;
+  while (ptr < end) {
+    ptr = ::google::protobuf::io::Parse32(ptr, &tag);
+    GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+    switch (tag >> 3) {
+      // repeated .vsearch.Tensor index = 1;
+      case 1: {
+        if (static_cast<::google::protobuf::uint8>(tag) != 10) goto handle_unusual;
+        do {
+          ptr = ::google::protobuf::io::ReadSize(ptr, &size);
+          GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+          parser_till_end = ::vsearch::Tensor::_InternalParse;
+          object = msg->add_index();
+          if (size > end - ptr) goto len_delim_till_end;
+          ptr += size;
+          GOOGLE_PROTOBUF_PARSER_ASSERT(ctx->ParseExactRange(
+              {parser_till_end, object}, ptr - size, ptr));
+          if (ptr >= end) break;
+        } while ((::google::protobuf::io::UnalignedLoad<::google::protobuf::uint64>(ptr) & 255) == 10 && (ptr += 1));
+        break;
+      }
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->EndGroup(tag);
+          return ptr;
+        }
+        auto res = UnknownFieldParse(tag, {_InternalParse, msg},
+          ptr, end, msg->_internal_metadata_.mutable_unknown_fields(), ctx);
+        ptr = res.first;
+        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr != nullptr);
+        if (res.second) return ptr;
+      }
+    }  // switch
+  }  // while
+  return ptr;
+len_delim_till_end:
+  return ctx->StoreAndTailCall(ptr, end, {_InternalParse, msg},
+                               {parser_till_end, object}, size);
+}
+#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+bool Index::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:vsearch.Index)
+  for (;;) {
+    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // repeated .vsearch.Tensor index = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+                input, add_index()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:vsearch.Index)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:vsearch.Index)
+  return false;
+#undef DO_
+}
+#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+
+void Index::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:vsearch.Index)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .vsearch.Tensor index = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->index_size()); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1,
+      this->index(static_cast<int>(i)),
+      output);
+  }
+
+  if (_internal_metadata_.have_unknown_fields()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        _internal_metadata_.unknown_fields(), output);
+  }
+  // @@protoc_insertion_point(serialize_end:vsearch.Index)
+}
+
+::google::protobuf::uint8* Index::InternalSerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:vsearch.Index)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .vsearch.Tensor index = 1;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->index_size()); i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        1, this->index(static_cast<int>(i)), target);
+  }
+
+  if (_internal_metadata_.have_unknown_fields()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:vsearch.Index)
+  return target;
+}
+
+size_t Index::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:vsearch.Index)
+  size_t total_size = 0;
+
+  if (_internal_metadata_.have_unknown_fields()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        _internal_metadata_.unknown_fields());
+  }
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .vsearch.Tensor index = 1;
+  {
+    unsigned int count = static_cast<unsigned int>(this->index_size());
+    total_size += 1UL * count;
+    for (unsigned int i = 0; i < count; i++) {
+      total_size +=
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          this->index(static_cast<int>(i)));
+    }
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void Index::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:vsearch.Index)
+  GOOGLE_DCHECK_NE(&from, this);
+  const Index* source =
+      ::google::protobuf::DynamicCastToGenerated<Index>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:vsearch.Index)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:vsearch.Index)
+    MergeFrom(*source);
+  }
+}
+
+void Index::MergeFrom(const Index& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:vsearch.Index)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  index_.MergeFrom(from.index_);
+}
+
+void Index::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:vsearch.Index)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void Index::CopyFrom(const Index& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:vsearch.Index)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool Index::IsInitialized() const {
+  return true;
+}
+
+void Index::Swap(Index* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void Index::InternalSwap(Index* other) {
+  using std::swap;
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  CastToBase(&index_)->InternalSwap(CastToBase(&other->index_));
+}
+
+::google::protobuf::Metadata Index::GetMetadata() const {
+  ::google::protobuf::internal::AssignDescriptors(&::assign_descriptors_table_vsearch_2eproto);
+  return ::file_level_metadata_vsearch_2eproto[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
 void SearchRequest::InitAsDefaultInstance() {
   ::vsearch::_SearchRequest_default_instance_._instance.get_mutable()->q_ = const_cast< ::vsearch::Tensor*>(
       ::vsearch::Tensor::internal_default_instance());
@@ -1655,6 +1965,9 @@ template<> PROTOBUF_NOINLINE ::vsearch::RetCode* Arena::CreateMaybeMessage< ::vs
 }
 template<> PROTOBUF_NOINLINE ::vsearch::Tensor* Arena::CreateMaybeMessage< ::vsearch::Tensor >(Arena* arena) {
   return Arena::CreateInternal< ::vsearch::Tensor >(arena);
+}
+template<> PROTOBUF_NOINLINE ::vsearch::Index* Arena::CreateMaybeMessage< ::vsearch::Index >(Arena* arena) {
+  return Arena::CreateInternal< ::vsearch::Index >(arena);
 }
 template<> PROTOBUF_NOINLINE ::vsearch::SearchRequest* Arena::CreateMaybeMessage< ::vsearch::SearchRequest >(Arena* arena) {
   return Arena::CreateInternal< ::vsearch::SearchRequest >(arena);

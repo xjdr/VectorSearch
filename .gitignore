@@ -7,3 +7,9 @@ VectorSearch.cbp
 cmake_install.cmake
 lib/
 tests/CMakeFiles/
+CMakeCache.txt
+CPackConfig.cmake
+CPackSourceConfig.cmake
+CTestTestfile.cmake
+build_version.cc
+tests/distance_test

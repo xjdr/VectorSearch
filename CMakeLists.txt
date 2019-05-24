@@ -6,15 +6,16 @@ set(CMAKE_CXX_STANDARD 14)
 option(PACKAGE_TESTS "Build the tests" ON)
 if(PACKAGE_TESTS)
     enable_testing()
-    add_subdirectory(tests)
+    #add_subdirectory(tests)
 endif()
 
+# Protobuf
 include(FindProtobuf)
 find_package(Protobuf REQUIRED)
 include_directories(${PROTOBUF_INCLUDE_DIR})
 
 add_subdirectory(extern/glog)
-add_subdirectory(extern/abseil-cpp)
+#add_subdirectory(extern/abseil-cpp)
 add_subdirectory(extern/grpc EXCLUDE_FROM_ALL)
 
 set(_PROTOBUF_LIBPROTOBUF libprotobuf)
@@ -42,10 +43,8 @@ add_custom_command(
         "${hw_proto}"
         DEPENDS "${hw_proto}")
 
-# Include generated *.pb.h files
-#include_directories("${CMAKE_CURRENT_BINARY_DIR}")
-
-add_executable(VectorSearch vsearch/main.cpp vsearch/vsearch_server.h
+add_executable(VectorSearch
+        vsearch/main.cpp vsearch/vsearch_server.h vsearch/index_server.h
         third_party/SPTAG/distance.h third_party/SPTAG/common.h third_party/SPTAG/definition_list.h third_party/SPTAG/common_utils.h
         ${hw_proto_srcs}
         ${hw_grpc_srcs}
@@ -56,8 +55,7 @@ target_include_directories(VectorSearch
 )
 
 target_link_libraries(VectorSearch
-        #${PROTOBUF_LIBRARY}
-        absl::base absl::synchronization absl::strings
+  #absl::base absl::synchronization absl::strings
         glog::glog
         ${_GRPC_GRPCPP_UNSECURE}
         ${_PROTOBUF_LIBPROTOBUF}
