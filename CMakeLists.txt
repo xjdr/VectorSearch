@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 14)
 option(PACKAGE_TESTS "Build the tests" ON)
 if(PACKAGE_TESTS)
     enable_testing()
-    #add_subdirectory(tests)
+    add_subdirectory(tests)
 endif()
 
 # Protobuf
@@ -15,7 +15,7 @@ find_package(Protobuf REQUIRED)
 include_directories(${PROTOBUF_INCLUDE_DIR})
 
 add_subdirectory(extern/glog)
-#add_subdirectory(extern/abseil-cpp)
+add_subdirectory(extern/abseil-cpp)
 add_subdirectory(extern/grpc EXCLUDE_FROM_ALL)
 
 set(_PROTOBUF_LIBPROTOBUF libprotobuf)
@@ -48,15 +48,16 @@ add_executable(VectorSearch
         third_party/SPTAG/distance.h third_party/SPTAG/common.h third_party/SPTAG/definition_list.h third_party/SPTAG/common_utils.h
         ${hw_proto_srcs}
         ${hw_grpc_srcs}
-        )
+        vsearch/VectorDB.cpp vsearch/VectorDB.h)
 
 target_include_directories(VectorSearch
         PUBLIC ${PROTOBUF_INCLUDE_DIRS}
 )
 
 target_link_libraries(VectorSearch
-  #absl::base absl::synchronization absl::strings
+  absl::base absl::synchronization absl::strings
         glog::glog
+        -lrocksdb
         ${_GRPC_GRPCPP_UNSECURE}
         ${_PROTOBUF_LIBPROTOBUF}
         )

@@ -1,7 +1,6 @@
 #ifndef VECTORSEARCH_VSEARCH_INDEX_SERVER_H_
 #define VECTORSEARCH_VSEARCH_INDEX_SERVER_H_
 
-
 #include <memory>
 #include <iostream>
 #include <string>
@@ -26,6 +25,9 @@ using vsearch::VectorSearch;
 
 class IndexServer final {
  public:
+ IndexServer(std::shared_ptr<VectorDB> db) : db_(db) {
+
+  }
   ~IndexServer() {
     server_->Shutdown();
     // Always shutdown the completion queue after the server.
@@ -60,8 +62,8 @@ class IndexServer final {
     // Take in the "service" instance (in this case representing an asynchronous
     // server) and the completion queue "cq" used for asynchronous communication
     // with the gRPC runtime.
-    CallData(VectorSearch::AsyncService* service, ServerCompletionQueue* cq)
-        : service_(service), cq_(cq), responder_(&ctx_), status_(CREATE) {
+    CallData(VectorSearch::AsyncService* service, ServerCompletionQueue* cq, std::shared_ptr<VectorDB> db)
+        : service_(service), cq_(cq), db_(db), responder_(&ctx_), status_(CREATE) {
       // Invoke the serving logic right away.
       Proceed();
     }
@@ -81,10 +83,18 @@ class IndexServer final {
         // Spawn a new CallData instance to serve new clients while we process
         // the one for this CallData. The instance will deallocate itself as
         // part of its FINISH state.
-        new CallData(service_, cq_);
+        new CallData(service_, cq_, db_);
 
         // The actual processing.
-        //reply_.a
+        for (auto t : request_.index()) {
+          std::string x;
+          t.SerializeToString(&x);
+          auto s = db_->put(std::to_string(t.id()), x);
+          assert(s.ok());
+        }
+
+        reply_.set_state(vsearch::Code::kOk);
+        reply_.set_msg("ok");
 
         // And we are done! Let the gRPC runtime know we've finished, using the
         // memory address of this instance as the uniquely identifying tag for
@@ -99,6 +109,7 @@ class IndexServer final {
     }
 
    private:
+    std::shared_ptr<VectorDB> db_;
     // The means of communication with the gRPC runtime for an asynchronous
     // server.
     VectorSearch::AsyncService* service_;
@@ -125,7 +136,7 @@ class IndexServer final {
   // This can be run in multiple threads if needed.
   void HandleRpcs() {
     // Spawn a new CallData instance to serve new clients.
-    new CallData(&service_, cq_.get());
+    new CallData(&service_, cq_.get(), db_);
     void* tag;  // uniquely identifies a request.
     bool ok;
     while (true) {
@@ -140,6 +151,7 @@ class IndexServer final {
     }
   }
 
+  std::shared_ptr<VectorDB> db_;
   std::unique_ptr<ServerCompletionQueue> cq_;
   VectorSearch::AsyncService service_;
   std::unique_ptr<Server> server_;

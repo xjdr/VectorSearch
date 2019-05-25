@@ -24,6 +24,9 @@ using vsearch::VectorSearch;
 
 class VsearchServer final {
  public:
+ VsearchServer(std::shared_ptr<VectorDB> db) : db_(db) {
+
+  }
   ~VsearchServer() {
     server_->Shutdown();
     // Always shutdown the completion queue after the server.
@@ -58,8 +61,8 @@ class VsearchServer final {
     // Take in the "service" instance (in this case representing an asynchronous
     // server) and the completion queue "cq" used for asynchronous communication
     // with the gRPC runtime.
-    CallData(VectorSearch::AsyncService* service, ServerCompletionQueue* cq)
-        : service_(service), cq_(cq), responder_(&ctx_), status_(CREATE) {
+    CallData(VectorSearch::AsyncService* service, ServerCompletionQueue* cq, std::shared_ptr<VectorDB> db)
+        : service_(service), cq_(cq), db_(db), responder_(&ctx_), status_(CREATE) {
       // Invoke the serving logic right away.
       Proceed();
     }
@@ -79,7 +82,12 @@ class VsearchServer final {
         // Spawn a new CallData instance to serve new clients while we process
         // the one for this CallData. The instance will deallocate itself as
         // part of its FINISH state.
-        new CallData(service_, cq_);
+        new CallData(service_, cq_, db_);
+
+        std::string x;
+        auto s = db_->get(std::string("0"), &x);
+        assert(s.ok());
+        std::cout << "-------------------------------- " << x << std::endl;
 
         // The actual processing.
         reply_.add_ids(0);
@@ -100,6 +108,7 @@ class VsearchServer final {
     }
 
    private:
+    std::shared_ptr<VectorDB> db_;
     // The means of communication with the gRPC runtime for an asynchronous
     // server.
     VectorSearch::AsyncService* service_;
@@ -126,7 +135,7 @@ class VsearchServer final {
   // This can be run in multiple threads if needed.
   void HandleRpcs() {
     // Spawn a new CallData instance to serve new clients.
-    new CallData(&service_, cq_.get());
+    new CallData(&service_, cq_.get(), db_);
     void* tag;  // uniquely identifies a request.
     bool ok;
     while (true) {
@@ -140,7 +149,7 @@ class VsearchServer final {
       static_cast<CallData*>(tag)->Proceed();
     }
   }
-
+  std::shared_ptr<VectorDB> db_;
   std::unique_ptr<ServerCompletionQueue> cq_;
   VectorSearch::AsyncService service_;
   std::unique_ptr<Server> server_;
