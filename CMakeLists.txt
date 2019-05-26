@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.14)
 project(VectorSearch)
 
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
 
 option(PACKAGE_TESTS "Build the tests" ON)
 if(PACKAGE_TESTS)
@@ -30,7 +31,7 @@ get_filename_component(hw_proto_path "${hw_proto}" PATH)
 # Generated sources
 set(hw_proto_srcs "${CMAKE_CURRENT_BINARY_DIR}/vsearch/vsearch.pb.cc")
 set(hw_proto_hdrs "${CMAKE_CURRENT_BINARY_DIR}/vsearch/vsearch.pb.h")
-set(hw_grpc_srcs "${CMAKE_CURRENT_BINARY_DIR}/vsearch/vsearch.grpc.pb.cc")
+set(hw_grpc_srcs "${CMAKE_CURRENT_BINARY_DIR}/vsearch/vsearch.grpc.pb.cc" )
 set(hw_grpc_hdrs "${CMAKE_CURRENT_BINARY_DIR}/vsearch/vsearch.grpc.pb.h")
 
 add_custom_command(
@@ -43,21 +44,36 @@ add_custom_command(
         "${hw_proto}"
         DEPENDS "${hw_proto}")
 
+include_directories(${PROJECT_SOURCE_DIR}/vsearch)
+
 add_executable(VectorSearch
-        vsearch/main.cpp vsearch/vsearch_server.h vsearch/index_server.h
-        third_party/SPTAG/distance.h third_party/SPTAG/common.h third_party/SPTAG/definition_list.h third_party/SPTAG/common_utils.h
+        vsearch/main.cpp vsearch/vsearch_server.h vsearch/index_server.h vsearch/vectordb.cpp vsearch/vectordb.h
+        vsearch/distance.h vsearch/common.h vsearch/definition_list.h vsearch/common_utils.h vsearch/neighborhoodgraph.h
+        vsearch/neighborhoodgraph.cpp vsearch/relativeneighborhoodgraph.h vsearch/vector_index.h vsearch/vector_index.cpp
+        vsearch/search_query.h vsearch/bktree.h vsearch/workspace.h vsearch/heap.h vsearch/query_result_set.h vsearch/kdtree.h
+        vsearch/vector_set.cpp vsearch/fine_grained_lock.h vsearch/common_helper.cpp
+        vsearch/vector_set.h vsearch/common_data_structure.h vsearch/common_data_structure.cpp vsearch/metadata_set.h
+        vsearch/metadata_set.cpp vsearch/bkt_index.h vsearch/bkt_idex.cpp vsearch/simple_ini_reader.h vsearch/string_converter.h
+        vsearch/bkt_parameter_definition_list.h vsearch/dataset.h vsearch/workspace_pool.h vsearch/workspace_pool.cpp
+        vsearch/common_helper.h vsearch/simple_ini_reader.cpp
+        vsearch/data_utils.h vsearch/kdt_index.h vsearch/kdt_parameter_definition_list.h vsearch/kdt_index.cpp
         ${hw_proto_srcs}
         ${hw_grpc_srcs}
-        vsearch/VectorDB.cpp vsearch/VectorDB.h)
+        )
 
 target_include_directories(VectorSearch
         PUBLIC ${PROTOBUF_INCLUDE_DIRS}
+        extern/abseil-cpp/
 )
 
 target_link_libraries(VectorSearch
-  absl::base absl::synchronization absl::strings
+        #absl::base
+        #absl::synchronization
+        #absl::strings
+        #absl::container
         glog::glog
         -lrocksdb
+        -ltbb
         ${_GRPC_GRPCPP_UNSECURE}
         ${_PROTOBUF_LIBPROTOBUF}
         )

@@ -13,3 +13,10 @@ CPackSourceConfig.cmake
 CTestTestfile.cmake
 build_version.cc
 tests/distance_test
+tests/bktree_test
+tests/vsearch_test
+tests/delindices/
+tests/origindices/
+tests/vsearch_test
+tests/addindices/
+tests/CTestTestfile.cmake

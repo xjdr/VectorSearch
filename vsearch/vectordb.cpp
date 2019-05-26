@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <cassert>
 
-#include "VectorDB.h"
+#include "vectordb.h"
 
 VectorDB::VectorDB() {
   assert(openDB().ok());
