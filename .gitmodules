@@ -13,3 +13,12 @@
 [submodule "extern/rocksdb"]
 	path = extern/rocksdb
 	url = https://github.com/facebook/rocksdb
+[submodule "extern/c-ares"]
+	path = extern/c-ares
+	url = https://github.com/c-ares/c-ares
+[submodule "extern/protobuf"]
+	path = extern/protobuf
+	url = https://github.com/protocolbuffers/protobuf
+[submodule "extern/oneTBB"]
+	path = extern/oneTBB
+	url = https://github.com/oneapi-src/oneTBB

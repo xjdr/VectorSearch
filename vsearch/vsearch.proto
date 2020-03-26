@@ -32,13 +32,21 @@ message RetCode {
 
 message Tensor {
     int32 id = 1;
-    int32 size = 2;
-    string metadata = 3;
-    bytes data = 4;
+    int32 n = 2;
+    bytes metadata = 3;
+    int32 metadata_size = 4;
+    bytes data = 5;
+    int32 size = 6;
 }
 
 message Index {
    repeated Tensor index = 1;
+}
+
+message ResponseBody {
+  float dist = 1;
+  int32 VID = 2;
+  string metadata = 3;
 }
 
 message SearchRequest {
@@ -47,7 +55,7 @@ message SearchRequest {
 }
 
 message SearchResponse {
-    repeated int32 ids = 1;
+    repeated ResponseBody responses = 1;
 }
 
 service VectorSearch {

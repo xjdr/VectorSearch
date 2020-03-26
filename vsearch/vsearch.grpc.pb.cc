@@ -11,9 +11,12 @@
 #include <grpcpp/impl/codegen/channel_interface.h>
 #include <grpcpp/impl/codegen/client_unary_call.h>
 #include <grpcpp/impl/codegen/client_callback.h>
-#include <grpcpp/impl/codegen/method_handler_impl.h>
+#include <grpcpp/impl/codegen/message_allocator.h>
+#include <grpcpp/impl/codegen/method_handler.h>
 #include <grpcpp/impl/codegen/rpc_service_method.h>
 #include <grpcpp/impl/codegen/server_callback.h>
+#include <grpcpp/impl/codegen/server_callback_handlers.h>
+#include <grpcpp/impl/codegen/server_context.h>
 #include <grpcpp/impl/codegen/service_type.h>
 #include <grpcpp/impl/codegen/sync_stream.h>
 namespace vsearch {
@@ -39,27 +42,27 @@ VectorSearch::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& chann
 }
 
 void VectorSearch::Stub::experimental_async::index(::grpc::ClientContext* context, const ::vsearch::Index* request, ::vsearch::RetCode* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_index_, context, request, response, std::move(f));
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_index_, context, request, response, std::move(f));
 }
 
 void VectorSearch::Stub::experimental_async::index(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::vsearch::RetCode* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_index_, context, request, response, std::move(f));
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_index_, context, request, response, std::move(f));
 }
 
 void VectorSearch::Stub::experimental_async::index(::grpc::ClientContext* context, const ::vsearch::Index* request, ::vsearch::RetCode* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_index_, context, request, response, reactor);
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_index_, context, request, response, reactor);
 }
 
 void VectorSearch::Stub::experimental_async::index(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::vsearch::RetCode* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_index_, context, request, response, reactor);
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_index_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::vsearch::RetCode>* VectorSearch::Stub::AsyncindexRaw(::grpc::ClientContext* context, const ::vsearch::Index& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::vsearch::RetCode>::Create(channel_.get(), cq, rpcmethod_index_, context, request, true);
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::vsearch::RetCode>::Create(channel_.get(), cq, rpcmethod_index_, context, request, true);
 }
 
 ::grpc::ClientAsyncResponseReader< ::vsearch::RetCode>* VectorSearch::Stub::PrepareAsyncindexRaw(::grpc::ClientContext* context, const ::vsearch::Index& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::vsearch::RetCode>::Create(channel_.get(), cq, rpcmethod_index_, context, request, false);
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::vsearch::RetCode>::Create(channel_.get(), cq, rpcmethod_index_, context, request, false);
 }
 
 ::grpc::Status VectorSearch::Stub::search(::grpc::ClientContext* context, const ::vsearch::SearchRequest& request, ::vsearch::SearchResponse* response) {
@@ -67,27 +70,27 @@ void VectorSearch::Stub::experimental_async::index(::grpc::ClientContext* contex
 }
 
 void VectorSearch::Stub::experimental_async::search(::grpc::ClientContext* context, const ::vsearch::SearchRequest* request, ::vsearch::SearchResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_search_, context, request, response, std::move(f));
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_search_, context, request, response, std::move(f));
 }
 
 void VectorSearch::Stub::experimental_async::search(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::vsearch::SearchResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_search_, context, request, response, std::move(f));
+  ::grpc_impl::internal::CallbackUnaryCall(stub_->channel_.get(), stub_->rpcmethod_search_, context, request, response, std::move(f));
 }
 
 void VectorSearch::Stub::experimental_async::search(::grpc::ClientContext* context, const ::vsearch::SearchRequest* request, ::vsearch::SearchResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_search_, context, request, response, reactor);
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_search_, context, request, response, reactor);
 }
 
 void VectorSearch::Stub::experimental_async::search(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::vsearch::SearchResponse* response, ::grpc::experimental::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_search_, context, request, response, reactor);
+  ::grpc_impl::internal::ClientCallbackUnaryFactory::Create(stub_->channel_.get(), stub_->rpcmethod_search_, context, request, response, reactor);
 }
 
 ::grpc::ClientAsyncResponseReader< ::vsearch::SearchResponse>* VectorSearch::Stub::AsyncsearchRaw(::grpc::ClientContext* context, const ::vsearch::SearchRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::vsearch::SearchResponse>::Create(channel_.get(), cq, rpcmethod_search_, context, request, true);
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::vsearch::SearchResponse>::Create(channel_.get(), cq, rpcmethod_search_, context, request, true);
 }
 
 ::grpc::ClientAsyncResponseReader< ::vsearch::SearchResponse>* VectorSearch::Stub::PrepareAsyncsearchRaw(::grpc::ClientContext* context, const ::vsearch::SearchRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderFactory< ::vsearch::SearchResponse>::Create(channel_.get(), cq, rpcmethod_search_, context, request, false);
+  return ::grpc_impl::internal::ClientAsyncResponseReaderFactory< ::vsearch::SearchResponse>::Create(channel_.get(), cq, rpcmethod_search_, context, request, false);
 }
 
 VectorSearch::Service::Service() {

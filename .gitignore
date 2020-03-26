@@ -6,6 +6,10 @@ VectorSearch
 VectorSearch.cbp
 cmake_install.cmake
 lib/
+include/
+share/
+bin/
+cmake/
 tests/CMakeFiles/
 CMakeCache.txt
 CPackConfig.cmake
@@ -20,3 +24,10 @@ tests/origindices/
 tests/vsearch_test
 tests/addindices/
 tests/CTestTestfile.cmake
+vsearch/vsearch.grpc.pb.cc
+vsearch/vsearch.grpc.pb.h
+vsearch/vsearch.pb.cc
+vsearch/vsearch.pb.h
+addindices/
+delindices/
+origindices/

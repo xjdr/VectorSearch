@@ -13,7 +13,24 @@ set_target_properties(gmock_main PROPERTIES FOLDER extern)
 
 macro(package_add_test TESTNAME)
     add_executable(${TESTNAME} ${ARGN})
-    target_link_libraries(${TESTNAME} gtest gmock gtest_main)
+    target_link_libraries(${TESTNAME} 
+  PUBLIC ${PROJECT_SOURCE_DIR}/lib/librocksdb.a
+  PUBLIC ${PROJECT_SOURCE_DIR}/lib/libtbb.so
+  PUBLIC ${PROJECT_SOURCE_DIR}/lib/libprotobuf.a
+  PUBLIC ${PROJECT_SOURCE_DIR}/lib/librocksdb.a
+  PUBLIC ${PROJECT_SOURCE_DIR}/lib/libtbb.so
+  gtest
+  gmock
+  gtest_main
+  -ldl
+  -pthread
+  -lbz2
+  -lc
+  -lcrypto
+  -lssl
+  -lz
+  -lcares
+      )
     add_test(NAME ${TESTNAME} COMMAND ${TESTNAME})
     set_target_properties(${TESTNAME} PROPERTIES FOLDER tests)
 endmacro()
@@ -43,23 +60,23 @@ package_add_test(vsearch_test vsearch_test.cpp
         ../vsearch/data_utils.h ../vsearch/kdt_index.h ../vsearch/kdt_parameter_definition_list.h ../vsearch/kdt_index.cpp
         )
 
-include(FindProtobuf)
-find_package(Protobuf REQUIRED)
-include_directories(${PROTOBUF_INCLUDE_DIR})
 
-target_link_libraries(distance_test
-    ${PROTOBUF_LIBRARY}
 
-)
+target_include_directories(distance_test
+  PUBLIC ${PROJECT_SOURCE_DIR}/include
+  )
 
-target_link_libraries(vsearch_test
-        #absl::base
-        #absl::synchronization
-        #absl::strings
-        #absl::container
-        glog::glog
-        #-lrocksdb
-        -ltbb
-        ${_GRPC_GRPCPP_UNSECURE}
-        ${_PROTOBUF_LIBPROTOBUF}
-        )
+target_include_directories(bktree_test
+  PUBLIC ${PROJECT_SOURCE_DIR}/include
+  )
+
+target_include_directories(vsearch_test
+  PUBLIC ${PROJECT_SOURCE_DIR}/include
+  )
+
+add_library(tbb SHARED IMPORTED)
+set_property(TARGET tbb PROPERTY IMPORTED_LOCATION PUBLIC "${PROJECT_SOURCE_DIR}/lib/libtbb.so.2")
+
+add_library(cares SHARED IMPORTED)
+set_property(TARGET cares PROPERTY IMPORTED_LOCATION PUBLIC "${PROJECT_SOURCE_DIR}/lib/libcares.so.2")
+

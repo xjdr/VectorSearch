@@ -56,7 +56,7 @@ TEST(DistanceTest, DistanceTest_Cosine_Test_S2D_Close) {
 TEST(DistanceTest, DistanceTest_L2_Test_Tensor) {
   vsearch::Index i;
   std::ifstream file;
-  std::string s = std::string("/home/xjdr/src/xjdr/VectorSearch/tests/tensor.txt");
+  std::string s = std::string("/home/xjdr/src/xjdr/vectorsearch/tests/tensor.txt");
   file.open(s.c_str(), std::fstream::in);
   if(!i.ParseFromIstream(&file)) {
     std::cerr << "Boooo" << std::endl;
@@ -73,7 +73,7 @@ TEST(DistanceTest, DistanceTest_L2_Test_Tensor) {
 TEST(DistanceTest, DistanceTest_Cosine_Test_Tensor) {
   vsearch::Index i;
   std::ifstream file;
-  std::string s = std::string("/home/xjdr/src/xjdr/VectorSearch/tests/tensor.txt");
+  std::string s = std::string("/home/xjdr/src/xjdr/vectorsearch/tests/tensor.txt");
   file.open(s.c_str(), std::fstream::in);
   if(!i.ParseFromIstream(&file)) {
     std::cerr << "Boooo" << std::endl;
@@ -90,7 +90,7 @@ TEST(DistanceTest, DistanceTest_Cosine_Test_Tensor) {
 TEST(DistanceTest, DistanceTest_CosineDistance_Test_Tensor) {
   vsearch::Index i;
   std::ifstream file;
-  std::string s = std::string("/home/xjdr/src/xjdr/VectorSearch/tests/tensor.txt");
+  std::string s = std::string("/home/xjdr/src/xjdr/vectorsearch/tests/tensor.txt");
   file.open(s.c_str(), std::fstream::in);
   if (!i.ParseFromIstream(&file)) {
     std::cerr << "Boooo" << std::endl;
